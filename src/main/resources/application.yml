@@ -1,0 +1,22 @@
+spring:
+  application:
+    name: shopping-cart
+  datasource:
+    url: jdbc:h2:mem:shopdb;DB_CLOSE_DELAY=-1
+    username: sa
+    password:
+  jpa:
+    hibernate:
+      ddl-auto: create-drop          # schema is created from the entities at startup
+    open-in-view: false
+    defer-datasource-initialization: true   # run data.sql AFTER Hibernate creates the tables
+  h2:
+    console:
+      enabled: true                  # http://localhost:8080/h2-console  (JDBC URL above, user sa, empty password)
+      path: /h2-console
+
+app:
+  jwt:
+    # Must be at least 32 characters for HS256. Override with the JWT_SECRET environment variable.
+    secret: ${JWT_SECRET:Equal-Experts-secret-key-ABC0123456789}
+    expiration-minutes: 60

@@ -1,0 +1,61 @@
+### Works with the VS Code "REST Client" extension or IntelliJ HTTP client
+
+### 1. Register (returns a JWT)
+POST http://localhost:8080/api/auth/register
+Content-Type: application/json
+
+{ "username": "alice", "password": "password123" }
+
+### 2. Login (returns a JWT). Copy the token into the variable below.
+POST http://localhost:8080/api/auth/login
+Content-Type: application/json
+
+{ "username": "alice", "password": "password123" }
+
+### 3. Public: browse products
+GET http://localhost:8080/api/products
+
+### 4. Add to cart  (replace TOKEN)
+@token = TOKEN
+POST http://localhost:8080/api/cart/items
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{ "productId": 2, "quantity": 3 }
+
+### 5. View cart
+GET http://localhost:8080/api/cart
+Authorization: Bearer {{token}}
+
+### 6. Remove an item
+DELETE http://localhost:8080/api/cart/items/2
+Authorization: Bearer {{token}}
+
+### 7. Payment methods
+GET http://localhost:8080/api/payment-methods
+Authorization: Bearer {{token}}
+
+### 8a. Checkout with CARD  (tok_ok approves, tok_fail... declines)
+POST http://localhost:8080/api/orders/checkout
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{ "paymentMethod": "CARD", "paymentDetails": { "cardToken": "tok_ok" } }
+
+### 8b. Checkout with UPI  (returns AWAITING_CONFIRMATION)
+POST http://localhost:8080/api/orders/checkout
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{ "paymentMethod": "UPI", "paymentDetails": { "vpa": "alice@bank" } }
+
+### 8c. Checkout with WALLET  (declined above 500.00)
+POST http://localhost:8080/api/orders/checkout
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{ "paymentMethod": "WALLET", "paymentDetails": { "walletId": "w-1" } }
+
+### 9. My orders
+GET http://localhost:8080/api/orders
+Authorization: Bearer {{token}}
